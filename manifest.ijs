@@ -8,7 +8,7 @@ Java Native Interface
 Contributed by Bill Lam
 )
 
-VERSION=: '1.0.0'
+VERSION=: '1.0.1'
 
 RELEASE=: 'j701'
 
