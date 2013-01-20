@@ -1,7 +1,11 @@
 coclass'jni'
 GetJNIENV=: 3 : 0
 if. 'Android'-:UNAME do.
-  'JNIVM_z_ JNIENV_z_'=: , > }. 'libj.so GetJavaVM i *x *x'&cd (,_1);,_1
+  if. IFQT do.
+    'JNIVM_z_ JNIENV_z_'=: , > }. ('"',libjqt,'" GetJavaVMENV i *x *x')&cd (,_1);,_1
+  else.
+    'JNIVM_z_ JNIENV_z_'=: , > }. 'libj.so GetJavaVM i *x *x'&cd (,_1);,_1
+  end.
   JNIENV_z_
 else.
   0
@@ -268,7 +272,12 @@ GetObjectRefType              x x x
 func=: (-.&' ')@:(30&{.)&.> JNI_FUNCTION
 func_sig=: dtb@:(30&}.)&.> JNI_FUNCTION
 opt=. IFUNIX{::' > + ';' > '
-". 4}. (>func),"1 ('=: 3 : (''''''1 ',"1 (":,.i.#JNI_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<JNIENV), y''',"1 ';'':'';',"1 '''''''1 ',"1 (":,.i.#JNI_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<x), y'')')
+if. IFQT do.
+  func_sig=: ((' '&(2})) ::[)&.> func_sig
+  ". 4}.(>func),"1 '=: (''"',"1 libjqt,"1 '" ',"1 (>func),"1 opt,"1 (>func_sig),"1 ''')&(15!:0)'
+else.
+  ". 4}. (>func),"1 ('=: 3 : (''''''1 ',"1 (":,.i.#JNI_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<JNIENV), y''',"1 ';'':'';',"1 '''''''1 ',"1 (":,.i.#JNI_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<x), y'')')
+end.
 EMPTY
 )
 JNIVM_FUNCTION=: <;._2 ] 0 : 0
@@ -284,10 +293,10 @@ AttachCurrentThreadAsDaemon   i x *x x
 
 3 : 0''
 (('ID_'&,)@:(-.&' ')@:(30&{.)&.> JNIVM_FUNCTION)=: i.#JNIVM_FUNCTION
-func=: (-.&' ')@:(30&{.)&.> JNIVM_FUNCTION
-func_sig=: dtb@:(30&}.)&.> JNIVM_FUNCTION
+func2=: (-.&' ')@:(30&{.)&.> JNIVM_FUNCTION
+func2_sig=: dtb@:(30&}.)&.> JNIVM_FUNCTION
 opt=. IFUNIX{::' > + ';' > '
-". 3}. (>func),"1 ('=: 3 : (''''''1 ',"1 (":,.i.#JNIVM_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<JNIVM), y''',"1 ';'':'';',"1 '''''''1 ',"1 (":,.i.#JNIVM_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<x), y'')')
+". 3}. (>func2),"1 ('=: 3 : (''''''1 ',"1 (":,.i.#JNIVM_FUNCTION),"1 opt,"1 (>func2_sig),"1 '''''&(15!:0) (<JNIVM), y''',"1 ';'':'';',"1 '''''''1 ',"1 (":,.i.#JNIVM_FUNCTION),"1 opt,"1 (>func2_sig),"1 '''''&(15!:0) (<x), y'')')
 EMPTY
 )
 3 : 0''
@@ -397,12 +406,20 @@ z
 jniVararg=: 1 : 0
 :
 opt=. IFUNIX{::' > + ';' > '
-((":1,m), opt, x)&(15!:0) (<JNIENV), y
+if. IFQT do.
+  ('"',libjqt,'" ',(m{::func_jni_), opt, (' ' 2}x))&(15!:0) y
+else.
+  ((":1,m), opt, x)&(15!:0) (<JNIENV), y
+end.
 )
 jniVarargs=: 2 : 0
 :
 opt=. IFUNIX{::' > + ';' > '
-((":1,m), opt, x)&(15!:0) (<n), y
+if. IFQT do.
+  ('"',libjqt,'" ',(m{::func_jni_), opt, (' ' 2}x))&(15!:0) y
+else.
+  ((":1,m), opt, x)&(15!:0) (<n), y
+end.
 )
 jniSigniture=: 3 : 0
 if. '#' e. y=. deb y do. y return. end.
@@ -584,32 +601,46 @@ EMPTY
 jniStaticField=: 1 : 0
 'field sig'=. <;._1 ' ', deb m
 rt=. field,' ',jniSigniture sig
-if. 1 4 e.~ 3!:0 y do.
+newcls=. 1
+if. 32 e.~ 3!:0 y do.
+  assert. 1 4 e.~ 3!:0 >y [ 'jniStaticField'
+  newcls=. 0
+  cls=. {.>y
+elseif. 1 4 e.~ 3!:0 y do.
   assert. 0-.@-:y [ 'jniStaticField'
   jniCheck cls=. GetObjectClass_jni_ <y
-else.
+elseif. do.
   assert. ''-.@-:y [ 'jniStaticField'
   class=. './' charsub y -. ';'
   class=. 1&jniResolve 'L',class
   jniCheck cls=. FindClass_jni_ <class
 end.
 z=. rt jniCallField_jni_ 1;y;cls
-jniCheck DeleteLocalRef_jni_ <cls
+if. newcls do.
+  jniCheck DeleteLocalRef_jni_ <cls
+end.
 z
 :
 'field sig'=. <;._1 ' ', deb m
 rt=. field,' ',jniSigniture sig
-if. 1 4 e.~ 3!:0 y do.
+newcls=. 1
+if. 32 e.~ 3!:0 y do.
+  assert. 1 4 e.~ 3!:0 >y [ 'jniStaticField'
+  newcls=. 0
+  cls=. {.>y
+elseif. 1 4 e.~ 3!:0 y do.
   assert. 0-.@-:y [ 'jniStaticField'
   jniCheck cls=. GetObjectClass_jni_ <y
-else.
+elseif. do.
   assert. ''-.@-:y [ 'jniStaticField'
   class=. './' charsub y -. ';'
   class=. 1&jniResolve 'L',class
   jniCheck cls=. FindClass_jni_ <class
 end.
 rt jniCallField_jni_ (1;y;cls), boxxopen x
-jniCheck DeleteLocalRef_jni_ <cls
+if. newcls do.
+  jniCheck DeleteLocalRef_jni_ <cls
+end.
 EMPTY
 )
 
