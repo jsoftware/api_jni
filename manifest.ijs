@@ -16,3 +16,4 @@ FILES=: 0 : 0
 history.txt
 jni.ijs
 )
+PLATFORMS=: 'linux win darwin android'
