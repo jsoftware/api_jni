@@ -1,12 +1,16 @@
 coclass'jni'
 GetJNIENV=: 3 : 0
 if. 'Android'-:UNAME do.
-  if. IFQT do.
-    'JNIVM_z_ JNIENV_z_'=: , > }. ('"',libjqt,'" GetJavaVMENV i *x *x')&cd (,_1);,_1
-  else.
-    'JNIVM_z_ JNIENV_z_'=: , > }. 'libj.so GetJavaVM i *x *x'&cd (,_1);,_1
+  try.
+    if. IFQT do.
+      'JNIVM_z_ JNIENV_z_'=: , > }. ('"',libjqt,'" GetJavaVMENV i *x *x')&cd (,_1);,_1
+    else.
+      'JNIVM_z_ JNIENV_z_'=: , > }. 'libj.so GetJavaVM i *x *x'&cd (,_1);,_1
+    end.
+    JNIENV_z_
+  catch.
+    0 return.
   end.
-  JNIENV_z_
 else.
   0
 end.
