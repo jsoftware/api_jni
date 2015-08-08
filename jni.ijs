@@ -834,8 +834,10 @@ s
 jnhandler_z_=: 4 : 0
 if. 3=4!:0<'jnhandler_debug' do.
   try. x jnhandler_debug y catch. end.
+  EMPTY return.
 end.
 jn_fn=. x
+if. 3~:(4!:0) <jn_fn do. EMPTY return. end.
 if. 13!:17'' do.
   z=. jn_fn~ y
 else.
