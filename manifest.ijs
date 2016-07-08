@@ -8,9 +8,9 @@ Java Native Interface
 Contributed by Bill Lam
 )
 
-VERSION=: '1.0.8'
+VERSION=: '1.0.9'
 
-RELEASE=: 'j802 j803 j804'
+RELEASE=: 'j802 j803 j804 j805'
 
 FILES=: 0 : 0
 history.txt
