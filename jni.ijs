@@ -495,7 +495,7 @@ for_t. <;._1 x do.
         z=. z, < a1
       end.
     elseif. t2 e. 'C' do.
-      assert. 2 131072 e.~ 3!:0 a1 [ 'jniSigarg'
+      assert. 2 131072 262144 e.~ 3!:0 a1 [ 'jniSigarg'
       z=. z, <{. uucp a1
     elseif. t2 e. 'SIJFD' do.
       assert. 1 4 8 e.~ 3!:0 a1 [ 'jniSigarg'
@@ -753,7 +753,7 @@ str=. stri=. 0$0
 jniCheck mid=. GetMethodID`GetStaticMethodID@.static cls;method;({.a.),~ proto-.'#'
 if. 1 e. s1=. ((<'Ljava/lang/CharSequence;') = sig1) +. (<'Ljava/lang/String;') = sig1=. <;._1 sig do.
   for_i. I. s1 do.
-    if. 2 131072 e.~ 3!:0 y1=. i{::y do.
+    if. 2 131072 262144 e.~ 3!:0 y1=. i{::y do.
       str=. str, <NewStringUTF < 8&u: ,y1
       stri=. stri, i
     end.
