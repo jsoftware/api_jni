@@ -518,7 +518,7 @@ jniCheck=: 3 : 0
 jniToJString=: 3 : 0
 if. 0=y do. '' return. end.
 jniCheck str=. GetStringUTFChars y;<<0
-z=. memr str,0,_1
+z=. utf8@:ucp memr str,0,_1
 jniCheck ReleaseStringUTFChars y;<<str
 z
 )
@@ -539,7 +539,7 @@ clz=. FindClass <'java/lang/String'
 z=. jniCheck NewObjectArray (#y);clz;0
 jniCheck DeleteLocalRef <clz
 for_i. i.#y do.
-  jniCheck SetObjectArrayElement z;i;s=. NewStringUTF utf8@,&.> i{y
+  jniCheck SetObjectArrayElement z;i;s=. NewStringUTF utf8@:(3&u:)@:ucp@,&.> i{y
   jniCheck DeleteLocalRef <s
 end.
 z
@@ -754,7 +754,7 @@ jniCheck mid=. GetMethodID`GetStaticMethodID@.static cls;method;({.a.),~ proto-.
 if. 1 e. s1=. ((<'Ljava/lang/CharSequence;') = sig1) +. (<'Ljava/lang/String;') = sig1=. <;._1 sig do.
   for_i. I. s1 do.
     if. 2 131072 262144 e.~ 3!:0 y1=. i{::y do.
-      str=. str, <NewStringUTF < 8&u: ,y1
+      str=. str, <NewStringUTF < utf8@:(3&u:)@:ucp ,y1
       stri=. stri, i
     end.
   end.
@@ -823,8 +823,8 @@ obj=. ((3{.}.y),~ x) jniNewObject class, ' ', sig
 jniProxy=: 4 : 0
 cls=. GetObjectClass <x
 mid=. GetMethodID cls;'CreateProxy';'(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;'
-s1=. NewStringUTF {.y
-s2=. NewStringUTF {:y
+s1=. NewStringUTF utf8@:(3&u:)@:ucp , {.y
+s2=. NewStringUTF utf8@:(3&u:)@:ucp , {:y
 s=. 'x x x x x x' (ID_CallObjectMethod jniVararg) x;mid;s1;s2
 jniCheck DeleteLocalRef <s1
 jniCheck DeleteLocalRef <s2
