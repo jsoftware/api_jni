@@ -10,7 +10,9 @@ Contributed by Bill Lam
 
 VERSION=: '1.0.14'
 
-RELEASE=: 'j805 j806 j807'
+RELEASE=: 'j805'
+
+FOLDER=: 'api/jni'
 
 FILES=: 0 : 0
 history.txt
