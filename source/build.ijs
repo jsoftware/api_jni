@@ -3,7 +3,7 @@ NB. build.ijs
 mkdir_j_ jpath '~Addons/api/jni'
 mkdir_j_ jpath '~addons/api/jni'
 
-writesourcex_jp_ '~Addons/api/jni/source/source';'~Addons/api/jni/jni.ijs'
+writesourcex_jp_ '~Addons/api/jni/source';'~Addons/api/jni/jni.ijs'
 
 (jpath '~addons/api/jni/jni.ijs') (fcopynew ::0:) jpath '~Addons/api/jni/jni.ijs'
 
