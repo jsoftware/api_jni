@@ -8,13 +8,14 @@ Java Native Interface
 Contributed by Bill Lam
 )
 
-VERSION=: '1.0.14'
+VERSION=: '1.0.15'
 
-RELEASE=: 'j805'
+RELEASE=: 'j807'
 
 FOLDER=: 'api/jni'
 
 FILES=: 0 : 0
 history.txt
 jni.ijs
+test/
 )

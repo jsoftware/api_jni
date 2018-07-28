@@ -26,12 +26,8 @@ NB. x   signiture
 NB. y   argument (first argument JNIENV is implied)
 jniVararg=: 1 : 0
 :
-opt=. IFUNIX{::' > + ';' > '
-if. IFQT do.
-  ('"',libjqt,'" ',(m{::func_jni_), opt, (' ' 2}x))&(15!:0) y
-else.
-  ((":1,m), opt, x)&(15!:0) (<JNIENV), y
-end.
+opt=. IFUNIX{::' + ';' '
+((":1,m), opt, x)&(15!:0) (<JNIENV), y
 )
 
 NB. =========================================================
@@ -42,12 +38,8 @@ NB. x   signiture
 NB. y   argument (first argument taken from n)
 jniVarargs=: 2 : 0
 :
-opt=. IFUNIX{::' > + ';' > '
-if. IFQT do.
-  ('"',libjqt,'" ',(m{::func_jni_), opt, (' ' 2}x))&(15!:0) y
-else.
-  ((":1,m), opt, x)&(15!:0) (<n), y
-end.
+opt=. IFUNIX{::' + ';' '
+((":1,m), opt, x)&(15!:0) (<n), y
 )
 
 NB. =========================================================

@@ -268,14 +268,9 @@ GetObjectRefType              x x x
 (('ID_'&,)@:(-.&' ')@:(30&{.)&.> JNI_FUNCTION)=: i.#JNI_FUNCTION
 func=: (-.&' ')@:(30&{.)&.> JNI_FUNCTION
 func_sig=: dtb@:(30&}.)&.> JNI_FUNCTION
-opt=. IFUNIX{::' > + ';' > '
+opt=. IFUNIX{::' + ';' '
 NB. first 4 lines are NULL
-if. IFQT do.
-  func_sig=: ((' '&(2})) ::[)&.> func_sig
-  ". 4}.(>func),"1 '=: (''"',"1 libjqt,"1 '" ',"1 (>func),"1 opt,"1 (>func_sig),"1 ''')&(15!:0)'
-else.
-  ". 4}. (>func),"1 ('=: 3 : (''''''1 ',"1 (":,.i.#JNI_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<JNIENV), y''',"1 ';'':'';',"1 '''''''1 ',"1 (":,.i.#JNI_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<x), y'')')
-end.
+". 4}. (>func),"1 ('=: 3 : (''''''1 ',"1 (":,.i.#JNI_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<JNIENV), y''',"1 ';'':'';',"1 '''''''1 ',"1 (":,.i.#JNI_FUNCTION),"1 opt,"1 (>func_sig),"1 '''''&(15!:0) (<x), y'')')
 EMPTY
 )
 
@@ -296,7 +291,7 @@ AttachCurrentThreadAsDaemon   i x *x x
 (('ID_'&,)@:(-.&' ')@:(30&{.)&.> JNIVM_FUNCTION)=: i.#JNIVM_FUNCTION
 func2=: (-.&' ')@:(30&{.)&.> JNIVM_FUNCTION
 func2_sig=: dtb@:(30&}.)&.> JNIVM_FUNCTION
-opt=. IFUNIX{::' > + ';' > '
+opt=. IFUNIX{::' + ';' '
 NB. first 3 lines are NULL
 ". 3}. (>func2),"1 ('=: 3 : (''''''1 ',"1 (":,.i.#JNIVM_FUNCTION),"1 opt,"1 (>func2_sig),"1 '''''&(15!:0) (<JNIVM), y''',"1 ';'':'';',"1 '''''''1 ',"1 (":,.i.#JNIVM_FUNCTION),"1 opt,"1 (>func2_sig),"1 '''''&(15!:0) (<x), y'')')
 EMPTY

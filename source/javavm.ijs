@@ -48,7 +48,7 @@ if. #jlib do.
   end.
 end.
 libjvm=. '"', '"',~ jvm, (('Darwin'-:UNAME) + IFUNIX){::'libjvm.dll';'libjvm.so';'libjvm.dylib'
-opt=. IFUNIX{::' > + ';' > '
+opt=. IFUNIX{::' + ';' '
 JNI_GetDefaultJavaVMInitArgs=: (libjvm, ' JNI_GetDefaultJavaVMInitArgs', opt, 'i x')&(15!:0)
 JNI_CreateJavaVM=: (libjvm, ' JNI_CreateJavaVM', opt, 'i *x *x x')&(15!:0)
 JNI_GetCreatedJavaVMs=: (libjvm, ' JNI_GetCreatedJavaVMs', opt, 'i *x i *i')&(15!:0)
@@ -85,7 +85,7 @@ if. noptions do. options memw initargs,8 1 4 end.
 (0{a.) memw initargs,(IF64{12 16),1,2
 vm=. ,2-2
 env=. ,2-2
-rc=. JNI_CreateJavaVM vm;env;initargs
+'rc vm env'=. 3{. JNI_CreateJavaVM vm;env;initargs
 if. noptions do. memf options end.
 memf initargs
 (0>rc){::(vm,env);0 0
