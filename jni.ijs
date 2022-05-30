@@ -305,13 +305,13 @@ if. #jlib do.
     'kernel32 SetDllDirectoryW > x *w'cd <uucp jlib
   end.
 end.
-libjvm=. '"', '"',~ jvm, (('Darwin'-:UNAME) + IFUNIX){::'libjvm.dll';'libjvm.so';'libjvm.dylib'
+libjvm=. jvm, (('Darwin'-:UNAME) + IFUNIX){::'jvm.dll';'libjvm.so';'libjvm.dylib'
 opt=. IFUNIX{::' + ';' '
-JNI_GetDefaultJavaVMInitArgs=: (libjvm, ' JNI_GetDefaultJavaVMInitArgs', opt, 'i x')&(15!:0)
-JNI_CreateJavaVM=: (libjvm, ' JNI_CreateJavaVM', opt, 'i *x *x x')&(15!:0)
-JNI_GetCreatedJavaVMs=: (libjvm, ' JNI_GetCreatedJavaVMs', opt, 'i *x i *i')&(15!:0)
-JNI_OnLoad=: (libjvm, ' JNI_OnLoad', opt, 'i x x')&(15!:0)
-JNI_OnUnload=: (libjvm, ' JNI_OnUnload', opt, 'n x x')&(15!:0)
+JNI_GetDefaultJavaVMInitArgs=: ('"', libjvm, '" JNI_GetDefaultJavaVMInitArgs', opt, 'i x')&(15!:0)
+JNI_CreateJavaVM=: ('"', libjvm, '" JNI_CreateJavaVM', opt, 'i *x *x x')&(15!:0)
+JNI_GetCreatedJavaVMs=: ('"', libjvm, '" JNI_GetCreatedJavaVMs', opt, 'i *x i *i')&(15!:0)
+JNI_OnLoad=: ('"', libjvm, '" JNI_OnLoad', opt, 'i x x')&(15!:0)
+JNI_OnUnload=: ('"', libjvm, '" JNI_OnUnload', opt, 'n x x')&(15!:0)
 EMPTY
 )
 CreateJavaVM=: 3 : 0
